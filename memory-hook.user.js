@@ -3,7 +3,7 @@
 // @author      Nulled
 // @description Hooks into the games memory and allows accessing it
 // @match       https://diep.io/*
-// @version     1.0.0
+// @version     0.1
 // @run-at      document-load
 // @grant       none
 // ==/UserScript==
