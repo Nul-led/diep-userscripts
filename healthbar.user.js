@@ -7,6 +7,7 @@
 // @icon         https://www.google.com/s2/favicons?domain=diep.io
 // @grant        none
 // ==/UserScript==
+
 const applyToAllGroups = (root, offset, value, mem) => { for(let at = mem.HEAP32[root >> 2]; at < mem.HEAP32[root + 4 >> 2]; at = at + 4) mem.HEAP32[mem.HEAP32[at >> 2] + offset >> 2] = value; };
 (async () => {
     if(!Hook && !diepMemory) throw 'No memory hook installed';
