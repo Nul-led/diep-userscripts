@@ -33,6 +33,7 @@ document.addEventListener('wheel', e => {
     if(!JSON.parse(window.localStorage.fovScriptIsActive)) return;
     window.localStorage.fovScale = parseFloat(window.localStorage.fovScale) + e.deltaY * parseFloat(window.localStorage.fovMouseWheelScaling);
     if(parseFloat(window.localStorage.fovScale) < 0) window.localStorage.fovScale = 0.05; //edit to change largest fov possible; warning: negative values cause bugs
+    if(parseFloat(window.localStorage.fovScale) > 10) window.localStorage.fovScale = 10; //edit to change lowest fov possible; warning: too large values may cause bugs
 })
 
 document.addEventListener('keydown', e => { if(e.key === toggleKey) window.localStorage.fovScriptIsActive = !JSON.parse(window.localStorage.fovScriptIsActive); })
