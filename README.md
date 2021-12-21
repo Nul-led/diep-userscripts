@@ -15,6 +15,8 @@ Contains a few scripts that actually work together
 - Fov: Allows editing ones field of view by scrolling with the mouse wheel
 - (planned) Player-Coords: Display your own coordinates somewhere on the screen
 - (planned) Leader-Coords: Display the leaders coordinates (maybe even with a distance to the players tank)
+- (planned) Anti Invis: Disable invisibility on all entities
+- (planned) Killer Info: Display your last killer's name (maybe freeze too idk yet)
 
 ### Suggestions or Anything else
 My Discord: Nulled#7888
