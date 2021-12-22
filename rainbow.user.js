@@ -21,7 +21,7 @@ const applyToAllGroups = (root, offset, value, mem) => { for(let at = mem.HEAP32
     }
     await new Promise(wait);
     const root = JSON.parse(localStorage.scriptConfig).constantPointers.rootFieldGroup + 11 * 12, offset = JSON.parse(localStorage.scriptConfig).offsets.color;
-    if(!window.hasOwnProperty('Hook')) setInterval(() => applyToAllGroups(root, offset, Math.floor(Math.random() * 18), window.diepMemory), 50 * parseInt(window.localStorage.rainbowInterval)); // equal to approximately one gametick
+    if(!window.hasOwnProperty('Hook')) setInterval(() => applyToAllGroups(root, offset, Math.floor(Math.random() * 18), window.diepMemory), 50 * parseInt(window.localStorage.rainbowInterval));
     else {
         let counter = parseInt(window.localStorage.rainbowInterval);
         window.Hook.addEventListener('clientbound', ({ data }) => {
