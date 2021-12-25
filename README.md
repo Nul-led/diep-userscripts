@@ -1,12 +1,21 @@
 # Diep Userscript Collection
 Contains a few scripts that actually work together
 
-### Compatability
+### Script Compatability
 - ABC's wasm hook: yes
 - Spade Squad server selector: yes
 - Diep.Style: yes
 - Shädam's Unlag: yes
 - Every other script as long as it does not deal with memory: probably lol
+
+### General Compatability
+- Tampermonkey: yes
+- Violentmonkey: yes
+- Every other Greasymonkey fork: probably
+- Chrome / Any Chromium based browsers: yes
+- Mozilla Firefox: yes
+- Opera: untested
+- Internet Explorer: please, just use chrome...
 
 ### Contents
 - Memory Hook: Makes dieps memory accessable via window.diepMemory
