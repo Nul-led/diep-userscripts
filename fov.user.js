@@ -18,12 +18,6 @@ if(!window.localStorage.fovMouseWheelScaling) window.localStorage.fovMouseWheelS
 const applyToGroup = (root, offset, mem) => { mem.HEAPF32[mem.HEAP32[mem.HEAP32[root >> 2] >> 2] + offset >> 2] = parseFloat(window.localStorage.fovScale); }
 
 (async () => {
-    const wait = cb => {
-        if(!window.hasOwnProperty('Hook') && !window.hasOwnProperty('diepMemory')) return setTimeout(wait, 10, cb);
-        if(!localStorage.scriptConfig || (/(?!build_)[0-9a-f]{40}(?=\.wasm\.js)/.exec(document.body.innerHTML) || [false])[0] !== JSON.parse(window.localStorage.scriptConfig).build) return setTimeout(wait, 10, cb);
-        cb();
-    }
-    await new Promise(wait);
     const root = JSON.parse(localStorage.scriptConfig).constantPointers.rootFieldGroup + 9 * 12, offset = JSON.parse(localStorage.scriptConfig).offsets.FOV;
     if(!window.hasOwnProperty('Hook')) setInterval(() => { applyToGroup(root, offset, window.diepMemory); }); // equal to approximately one gametick
     else window.Hook.addEventListener('clientbound', ({ data }) => { if(data[0] === 0) setTimeout(() => applyToGroup(root, offset, window.Hook.Module)) });
