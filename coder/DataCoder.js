@@ -114,7 +114,7 @@ class DataReader extends BinaryReader {
      */
     jumpTableToArray(length, dataType = 'u8') {
         const out = new Array(length);
-        const cb = index => out[index] = this[datatype]();
+        const cb = index => out[index] = this[dataType]();
         this.jumpTable(cb);
         return out;
     }
