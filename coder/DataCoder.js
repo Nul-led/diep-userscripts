@@ -134,7 +134,109 @@ class DataReader extends BinaryReader {
 }
 
 class DataWriter extends BinaryWriter {
-    
+    /**
+     * Writes a net color code
+     */
+    netColor(colorName) {
+        const index = netColors.indexOf(colorName);
+        if(index === -1) throw `Invalid color name ${colorName}`;
+        this.vi(index);
+    }
+
+    /**
+     * Writes a rgb (red - green - blue) color sequence
+     * @param {Color} color 
+     */
+    rgbColor(color) {
+        this.array(color.toRGBArray(), 'u8');
+    }
+
+    /**
+     * Writes a bgr (blue - green - red) color sequence
+     * @param {Color} color 
+     */
+    bgrColor(color) {
+        this.array(color.toBGRArray(), 'u8');
+    }
+
+    /**
+     * Writes a hexadecimal color code
+     * @param {Color} color 
+     */
+    hexColor(color) {
+        this.stringNT(color.toHex());
+    }
+
+    flagsArray(flags) {
+
+    }
+
+    flags(flags, order) {
+
+    }
+
+    /**
+     * Writes an entityId
+     * Format: 'hash#id'
+     */
+    entityId(entityId) {
+        if(!entityId) return this.vu(0);
+        const [hash, id] = entityId.split('#');
+        this.vu(Number(hash));
+        this.vu(Number(id));
+    }
+
+    /**
+     * Writes a tankId
+     */
+    tankId(tankName) {
+        const index = tankNames.indexOf(tankName);
+        if(index === -1) throw `Invalid tank name ${tankName}`;
+        this.vi(index);
+    }
+
+    /**
+     * Writes a statId
+     */
+    statId(statName) {
+        const index = statNames.indexOf(statName);
+        if(index === -1) throw `Invalid stat name ${statName}`;
+        this.vi(index);
+    }
+
+    /**
+     * Writes a 2d position with 2 variable length integers
+     */
+    positionVI(x, y) {
+        this.vi(x);
+        this.vi(y);
+    }
+
+    /**
+     * Writes a 2d position with 2 variable length floats
+     */
+    positionVF(x, y) {
+        this.vf(x);
+        this.vf(y);
+    }
+
+    /**
+     * Reads an array with elements of a certain datatype
+     * @param {Array.<?>} elements
+     * @param {String} dataType 
+     */
+    array(elements, dataType) {
+        for(let i = 0; i < elements.length; ++i)
+            this[dataType](elements[i]);
+    }
+
+    arrayToJumpTable() {
+
+    }
+
+    jumpTable() {
+
+    }
 }
 
 module.exports = { DataReader, DataWriter };
