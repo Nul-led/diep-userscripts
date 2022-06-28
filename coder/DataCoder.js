@@ -98,7 +98,7 @@ class DataReader extends BinaryReader {
      */
     array(length, dataType = 'u8') {
         const out = new Array(length);
-        for(let i = 0; i < length; i++)
+        for(let i = 0; i < length; ++i)
             out.push(this[dataType]());
         return out;
     }
