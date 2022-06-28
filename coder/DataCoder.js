@@ -1,10 +1,9 @@
 const { BinaryReader, BinaryWriter } = require('./BinaryView');
 const Color = require('./Color');
 
-const netColors = require('./colors.json');
-const tankNames = require('./tanks.json');
-const statNames = require('./stats.json');
-
+const netColors = require('./data/colors.json');
+const tankNames = require('./data/tanks.json');
+const statNames = require('./data/stats.json');
 
 class DataReader extends BinaryReader {
     /**
