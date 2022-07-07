@@ -1,5 +1,5 @@
 const { BinaryReader, BinaryWriter } = require('./BinaryView');
-const Color = require('./Color');
+const Color = require('./utils/Color');
 
 const netColors = require('./data/colors.json');
 const tankNames = require('./data/tanks.json');
