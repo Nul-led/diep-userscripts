@@ -55,7 +55,7 @@ class ClientboundReader extends DataReader {
     /**
      * Reads the current packet automatically by reading the packet header
      */
-    byHeader() {
+    readPacket() {
         const header = this.u8();
         switch(header) {
             case CLIENTBOUND_HEADERS.update: return this.update();
@@ -74,8 +74,22 @@ class ClientboundReader extends DataReader {
             default: return this.unknown(header);
         }
     }
+    
+    /**
+     * Wraps the readPacket method with a callback to potentially provide easier access
+     */
+    readPacketCB(cb) {
+        cb(this.parseByHeader());
+    }
 
-    update() {}
+    /**
+     * Reads an update packet
+     * Since the fields are still private this will be held back for now
+     * Implement your own 0x00 parser here if you want :)
+     */
+    update() {
+        
+    }
 
     /**
      * Reads an outdated client packet
