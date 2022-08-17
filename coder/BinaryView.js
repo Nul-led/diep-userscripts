@@ -1,3 +1,5 @@
+const LZ4 = require('lz4js');
+
 class Converter {
     constructor(size) {
         this._buffer = new ArrayBuffer(size);
@@ -182,6 +184,16 @@ class BinaryReader {
         const out = this._utf8.decode(this.buffer.slice(this.at, end));
         this.at = end + 1;
         return out;
+    }
+
+    /**
+     * Decompresses an LZ4 block
+     */
+    lz4() {
+        const buffer = this.buffer.slice(this.at);
+        this.at += buffer.length;
+
+        return LZ4.decompress(buffer);
     }
 
     /**
@@ -388,6 +400,16 @@ class BinaryWriter {
         this.length += written;
         this.buffer[this.length++] = 0;
         return this;
+    }
+
+    /**
+     * Writes an array of bits into VarUint32 encoding
+     */
+    flags(bitmap) {
+        let bits = 0;
+        for (let bit of bitmap) bits |= bit;
+
+        return this.vu(bits);
     }
 
     /**
