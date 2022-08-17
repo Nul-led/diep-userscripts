@@ -79,7 +79,7 @@ class ClientboundReader extends DataReader {
      * Wraps the readPacket method with a callback to potentially provide easier access
      */
     readPacketCB(cb) {
-        cb(this.parseByHeader());
+        cb(this.readPacket());
     }
 
     /**
@@ -98,7 +98,9 @@ class ClientboundReader extends DataReader {
         return {
             header: CLIENTBOUND_HEADERS.outdated,
             kind: CLIENTBOUND_KINDS.outdated,
-            data: {},
+            data: {
+                build: this.stringNT(),
+            },
             raw: this.buffer
         };
     }
@@ -112,7 +114,7 @@ class ClientboundReader extends DataReader {
             kind: CLIENTBOUND_KINDS.compressed,
             data: {
                 decompressedOutputLength: this.u32(),
-                block: this.flush()
+                block: this.lz4(), // recursively parse this
             },
             raw: this.buffer
         };
@@ -285,9 +287,7 @@ class ClientboundReader extends DataReader {
     }
 }
 
-class ClientboundWriter extends DataWriter {
-
-}
+class ClientboundWriter extends DataWriter {} // Unneeded
 
 /**
  * Serverbound
@@ -300,18 +300,103 @@ class ClientboundWriter extends DataWriter {
  * 06 -
  * 07 Extension Found
  * 08 Respawn
- * 09 Tank Tank
+ * 09 Take Tank
  * 10 PoW Answer
  * 11 Eval Answer
  */
 
-class ServerboundReader extends DataReader {
+ const SERVERBOUND_HEADERS = {
+    init: 0x00,
+    input: 0x01,
+    spawn: 0x02,
+    upgradeStat: 0x03,
+    upgradeTank: 0x04,
+    heartbeat: 0x05,
+    extensionFound: 0x07,
+    respawn: 0x08,
+    takeTank: 0x09,
+    powReply: 0x0A,
+    evalReply: 0x0B,
+};
 
-}
+const SERVERBOUND_KINDS = {
+    init: 'INIT',
+    input: 'INPUT',
+    spawn: 'SPAWN',
+    upgradeStat: 'UPGRADE_STAT',
+    upgradeTank: 'UPGRADE_TANK',
+    heartbeat: 'HEARTBEAT',
+    extensionFound: 'EXTENSION_FOUND',
+    respawn: 'RESPAWN',
+    takeTank: 'TAKE_TANK',
+    powReply: 'POW_REPLY',
+    evalReply: 'EVAL_REPLY',
+};
 
 class ServerboundWriter extends DataWriter {
+    writePacket(type, ...args) {
+        switch (type) {
+            case SERVERBOUND_KINDS.init: return this.init(...args);
+            case SERVERBOUND_KINDS.input: return this.input(...args);
+            case SERVERBOUND_KINDS.spawn: return this.spawn(...args);
+            case SERVERBOUND_KINDS.upgradeStat: return this.upgradeStat(...args);
+            case SERVERBOUND_KINDS.upgradeTank: return this.upgradeTank(...args);
+            case SERVERBOUND_KINDS.heartbeat: return this.heartbeat(...args);
+            case SERVERBOUND_KINDS.extensionFound: return this.extensionFound(...args);
+            case SERVERBOUND_KINDS.respawn: return this.respawn(...args);
+            case SERVERBOUND_KINDS.takeTank: return this.takeTank(...args);
+            case SERVERBOUND_KINDS.powReply: return this.powReply(...args);
+            case SERVERBOUND_KINDS.evalReply: return this.evalReply(...args);
+            default: throw new Error(`Could not create packet ${type}: Unknown Type.`);
+        }
+    }
 
+    init(build, password, party, token, debug) {
+        return this.vu(SERVERBOUND_KINDS.init).stringNT(build).stringNT(password).stringNT(party).stringNT(token).vu(debug).write();
+    }
+
+    input(flags, mouseX, mouseY, gamepadX, gamepadY) {
+        return this.vu(SERVERBOUND_KINDS.input).flags(flags).vf(mouseX).vf(mouseY).vf(gamepadX).vf(gamepadY).write();
+    }
+
+    spawn(name) {
+        return this.vu(SERVERBOUND_KINDS.spawn).stringNT(name).write();
+    }
+
+    upgradeStat(id, max) {
+        return this.vu(SERVERBOUND_KINDS.upgradeStat).statId(id).vi(max).write();
+    }
+
+    upgradeTank(id) {
+        return this.vu(SERVERBOUND_KINDS.upgradeTank).tankId(tank).write();
+    }
+
+    heartbeat() { 
+        return this.vu(SERVERBOUND_KINDS.heartbeat).write();
+    }
+
+    extensionFound() { // As of now, this packet is unused.
+        return this.vu(SERVERBOUND_KINDS.extensionFound).write();
+    }
+
+    respawn() {
+        return this.vu(SERVERBOUND_KINDS.respawn).write();
+    }
+
+    takeTank() {
+        return this.vu(SERVERBOUND_KINDS.takeTank).write();
+    }
+
+    powReply(result) {
+        return this.vu(SERVERBOUND_KINDS.powReply).stringNT(result).write();
+    }
+
+    evalReply(id, result) {
+        return this.vu(SERVERBOUND_KINDS.evalReply).vu(id).vu(result).write();
+    }
 }
+
+class ServerboundReader extends DataReader {} // Unneeded
 
 module.exports = {
     ClientboundReader,
