@@ -30,3 +30,4 @@ Contains a few scripts that actually work together
 
 ### Suggestions or Anything else
 My Discord: Nulled#7888
+My Discord: Altanis#8593
