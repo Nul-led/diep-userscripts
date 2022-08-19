@@ -22,6 +22,7 @@ Contains a few scripts that actually work together
 - Healthbar: Makes all healthbars ingame visible (even for drones and other bullets etc)
 - Rainbow: Fun rainbow theme, has no real use apart from triggering epilepsy
 - Fov: Allows editing ones field of view by scrolling with the mouse wheel
+- Permanent Leader Arrow: A never-fading leader arrow
 - (planned) Player-Coords: Display your own coordinates somewhere on the screen
 - (planned) Leader-Coords: Display the leaders coordinates (maybe even with a distance to the players tank)
 - (planned) Anti Invis: Disable invisibility on all entities
